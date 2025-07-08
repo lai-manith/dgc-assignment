@@ -1,0 +1,32 @@
+@use "../../../styles/base/color" as c;
+
+@mixin mask($value) {
+  -webkit-mask: $value;
+  mask: $value;
+}
+
+.custom-loader {
+  border-radius: 50%;
+  background: radial-gradient(farthest-side, c.$color-primary 94%, #0000)
+      top/6px 6px no-repeat,
+    conic-gradient(#0000 30%, c.$color-primary);
+  @include mask(radial-gradient(farthest-side, #0000 calc(100% - 6px), #000 0));
+  animation: s3 1s infinite linear;
+
+  &.comment {
+    width: 30px;
+    height: 30px;
+    background: radial-gradient(farthest-side, c.$color-primary 94%, #0000)
+        top/5px 5px no-repeat,
+      conic-gradient(#0000 30%, c.$color-primary);
+    @include mask(
+      radial-gradient(farthest-side, #0000 calc(100% - 5px), #000 0)
+    );
+  }
+}
+
+@keyframes s3 {
+  100% {
+    transform: rotate(1turn);
+  }
+}

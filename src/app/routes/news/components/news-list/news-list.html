@@ -1,0 +1,40 @@
+@if(retry()) {
+<div class="text-gray-500 text-center py-8 sm:col-span-2">
+  Something went wrong. Please
+  <strong
+    class="mx-1 cursor-pointer bg-[#f0bb78] px-[20px] py-[4px] rounded-md text-white"
+    (click)="onRetry()"
+    role="button"
+    >Try</strong
+  >
+  again.
+</div>
+} @else {
+<h1 class="text-2xl font-semibold text-gray-900 mb-5 flex items-center gap-x-1">
+  Top stories
+  <span class="material-symbols-outlined text-[#f0bb78]">
+    brand_awareness
+  </span>
+</h1>
+
+<app-infinite-scroll
+  [loading]="loading"
+  [page]="page"
+  [limit]="limit"
+  [allIds]="allIds"
+  loadingContainerClass="grid grid-cols-1 sm:grid-cols-2 gap-5 bg-white whitespace-normal"
+  [hasMoreData]="hasMoreData()"
+  (loadMore)="loadMoreItems()"
+  #infiniteScroll
+>
+  <ul class="grid grid-cols-1 sm:grid-cols-2 gap-5 bg-white whitespace-normal">
+    @for (item of data(); track $index) {
+    <li>
+      <app-news-card [info]="item" />
+    </li>
+    }@empty { @if(!loading() && !retry()) {
+    <div class="text-gray-500 text-center py-8 sm:col-span-2">No news yet.</div>
+    } }
+  </ul>
+</app-infinite-scroll>
+}

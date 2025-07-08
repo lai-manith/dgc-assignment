@@ -1,0 +1,82 @@
+<div class="comment">
+  <div class="flex gap-1 sm:gap-3">
+    <!-- ========== Avatar ========== -->
+    <div class="flex-shrink-0">
+      <div
+        class="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-medium"
+        [style.background-color]="comment?.by | avatarColor"
+      >
+        {{ comment?.by | avatarInitials }}
+      </div>
+    </div>
+
+    <!-- ========== Comment Content ========== -->
+    <div class="flex-1 min-w-0">
+      <div class="bg-slate-100 p-3 rounded-md">
+        <!-- Header -->
+        @if(comment?.by) {
+        <div class="flex items-center gap-2 text-md text-gray-600 flex-wrap">
+          <span class="font-medium text-gray-900">{{ comment!.by }}</span>
+          <hr class="circle" />
+          @let timeAgo = comment?.time ? (comment!.time! | timeAgo) : '';
+          <span class="text-gray-500 text-xs">{{ timeAgo }}</span>
+        </div>
+        }
+
+        <!-- ========== Comment Text ========== -->
+        @if(comment?.dead) {
+        <div class="text-gray-500 text-sm">[dead]</div>
+        }
+        <!--  -->
+        @else if(comment?.deleted) {
+        <div class="text-gray-500 text-sm">[removed]</div>
+        }
+        <!--  -->
+        @else if(comment?.text) {
+        <div
+          class="text-sm comment-content prose prose-sm sm:prose-base max-w-none text-gray-800 mb-2 leading-relaxed"
+          [innerHTML]="comment!.text | responsiveHtml"
+        ></div>
+        }
+      </div>
+
+      <!-- ========== how/hide replies ========== -->
+      @if(comment?.kids && (comment?.kids?.length || 0) > 0) {
+      <button
+        type="button"
+        (click)="toggleReplies()"
+        class="hover:text-gray-700 transition-colors text-xs text-gray-500 cursor-pointer"
+      >
+        {{ showReplies() ? "Hide" : "Show" }} replies ({{
+          comment?.kids?.length || 0
+        }})
+      </button>
+      }
+    </div>
+  </div>
+
+  <!-- ========== REPLIES ========== -->
+  @if(showReplies() && replies.length > 0){
+  <div
+    class="sm:ml-11 sm:border-l border-gray-200 space-y-0 grid gap-y-3 mt-3 sm:pl-4"
+    [class]="level < 3 ? 'ml-3 pl-3 border-l' : 'border-l-0'"
+  >
+    @for (reply of replies; track $index) {
+    <div class="relative">
+      <!-- Threading line -->
+      <div
+        class="absolute sm:-left-4 top-0 sm:w-3 sm:h-6 border-l border-b border-gray-200 rounded-bl-md"
+        [class]="level < 3 ? '-left-3 w-2 h-4' : 'w-0 h-0'"
+      ></div>
+      <app-comment [comment]="reply" [level]="level + 1"></app-comment>
+    </div>
+    }
+  </div>
+  }
+  <!-- ========== LOADING REPLIES ========== -->
+  @if(loadingReplies()) {
+  <div class="ml-11 flex justify-center py-4">
+    <app-loading [classBinding]="'comment'"></app-loading>
+  </div>
+  }
+</div>

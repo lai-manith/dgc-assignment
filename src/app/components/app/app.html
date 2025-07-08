@@ -1,0 +1,56 @@
+<div class="app-content w-full overflow-x-hidden">
+  <div class="container-wrapper relative">
+    <!-- ========== Navigation ========== -->
+    <div
+      class="navigation fixed w-full top-0 left-0 z-99 bg-[#f0bb78]"
+      #navigation
+    >
+      <div class="mx-auto py-3 w-full max-w-[90%] md:max-w-[80%]">
+        <!-- ========== Logo ========== -->
+        <div
+          role="button"
+          routerLink="/"
+          (click)="scrollToTop()"
+          class="w-fit cursor-pointer flex items-center justify-center gap-x-2 mx-auto"
+        >
+          <figure class="relative logo-wrapper__image h-[50px] w-[50px]">
+            <img
+              ngSrc="/icons/logo.svg"
+              fill=""
+              priority=""
+              alt="logo of hack news"
+              class="rounded-sm"
+            />
+          </figure>
+
+          <figcaption class="logo-wrapper__text">
+            <h1 class="text-xl text-white font-bold">Hacker News</h1>
+          </figcaption>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== CONTENT ========== -->
+    @let navHeight = navigationHeight() + 'px';
+    <main [style.padding-top]="navHeight" id="root-container">
+      <section class="w-full max-w-[90%] md:max-w-[80%] mx-auto py-5 news">
+        <router-outlet />
+      </section>
+
+      <!-- ========== Back To Top Button ========== -->
+      <section
+        title="Go To Top"
+        class="opacity-0 fixed z-99 bg-[#f0bb78] transition-opacity fixed z-90 bottom-8 right-8 border-0 h-[3em] w-[3em] rounded-full drop-shadow-md grid place-items-center cursor-pointer"
+        [class]="isScrollToBottom() ? 'opacity-100' : ''"
+        (click)="scrollToTop()"
+        role="button"
+      >
+        <button type="button" class="flex cursor-pointer">
+          <span class="material-symbols-outlined text-white">
+            arrow_upward
+          </span>
+        </button>
+      </section>
+    </main>
+  </div>
+</div>

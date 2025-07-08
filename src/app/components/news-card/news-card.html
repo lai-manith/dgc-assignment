@@ -1,0 +1,44 @@
+<div
+  class="bg-slate-100 list-none p-4 flex flex-col justify-between min-w-0 rounded-md h-full cursor-pointer hover:bg-slate-200"
+  role="button"
+  [routerLink]="data()!.id + ''"
+>
+  <article class="h-full flex flex-col justify-between">
+    <section class="flex justify-between items-start gap-2">
+      <strong class="line-clamp-3 flex-1">{{ data()?.title || "" }}</strong>
+      @if(data()?.url) {
+      <button
+        class="flex rounded flex-shrink-0 group relative text-[#f0bb78] cursor-pointer"
+        (click)="$event.stopPropagation(); openLink(data()!.url!)"
+      >
+        <span class="material-symbols-outlined"> outbound </span>
+
+        <span
+          class="absolute bottom-full right-0 mb-1 px-2 py-1 text-xs text-white bg-gray-800 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none"
+        >
+          Open link
+        </span>
+      </button>
+      }
+    </section>
+    <!--  -->
+    @let score = data()?.score || 0;
+    <!--  -->
+    @let pointText = score > 1 ? "points" : "point";
+    <!--  -->
+    @let commentCount = data()?.kids?.length || 0;
+    <!--  -->
+    @let commentText = commentCount > 1 ? "comments" : "comment";
+    <!--  -->
+    @let timeAgo = data()?.time ? (data()!.time! | timeAgo) : '';
+    <section class="opacity-80 mt-2">
+      <div class="flex items-center gap-2 flex-wrap text-xs">
+        <span>{{ timeAgo }}</span> <span>by {{ data()?.by }}</span>
+        <hr class="circle" />
+        <span>{{ commentCount }} {{ commentText }}</span>
+        <hr class="circle" />
+        <span>{{ score }} {{ pointText }}</span>
+      </div>
+    </section>
+  </article>
+</div>

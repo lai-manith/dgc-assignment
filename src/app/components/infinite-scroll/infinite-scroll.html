@@ -1,0 +1,31 @@
+<div class="relative w-full">
+  <!-- Content projection -->
+  <ng-content></ng-content>
+
+  <!-- Loading state -->
+  @if (loading()) {
+  <ng-container *ngTemplateOutlet="loadingTemplate"></ng-container>
+  }
+</div>
+
+<!-- Sentinel for infinite scroll -->
+<div #sentinel class="h-1"></div>
+
+<!-- Loading template -->
+<ng-template #loadingTemplate>
+  @if(page() > 0) {
+  <div class="grid place-items-center mt-5">
+    <app-loading />
+  </div>
+  }
+  <!-- Skeleton -->
+  @else {
+  <!--  -->
+  <div [class]="loadingContainerClass">
+    @for (item of skeletonItems(); track $index) {
+    <div class="skeleton h-full" [class]="skeletonItemClass"></div>
+    }
+  </div>
+  <!--  -->
+  }
+</ng-template>

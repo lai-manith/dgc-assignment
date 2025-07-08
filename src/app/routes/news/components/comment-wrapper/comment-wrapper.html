@@ -1,0 +1,26 @@
+<h2 class="text-lg font-semibold text-gray-900 my-4">
+  Comments ({{ dataLength() }})
+</h2>
+
+<app-infinite-scroll
+  [loading]="loading"
+  [page]="page"
+  [limit]="limit"
+  [allIds]="allIds"
+  loadingContainerClass="grid gap-y-3"
+  [hasMoreData]="hasMoreData()"
+  (loadMore)="loadMoreItems()"
+  #infiniteScroll
+>
+  <div class="grid gap-y-3">
+    @for (comment of data(); track $index) {
+    <app-comment [comment]="comment" [level]="0"></app-comment>
+    }
+    <!--  -->
+    @empty { @if(!loading()) {
+    <div class="text-gray-500 text-center py-8">No comments yet.</div>
+    }
+    <!--  -->
+    }
+  </div>
+</app-infinite-scroll>

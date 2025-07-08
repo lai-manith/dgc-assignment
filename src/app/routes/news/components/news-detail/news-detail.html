@@ -1,0 +1,70 @@
+<div>
+  <div class="mb-4 w-fit">
+    <a
+      routerLink="/"
+      class="text-blue-600 text-sm cursor-pointer flex items-center gap-x-2"
+      ><span class="material-symbols-outlined"> arrow_left_alt </span>
+      Back to stories
+    </a>
+  </div>
+
+  <div class="bg-white rounded-md">
+    @if(loading()) {
+    <div class="grid place-items-center mt-5">
+      <app-loading />
+    </div>
+    }
+    <!--  -->
+    @else {
+    <div class="border-b border-gray-200">
+      @if(post?.url) {
+      <a href="{{ post!.url }}" target="_blank">
+        <h1
+          class="text-xl font-bold text-gray-900 hover:underline"
+          title="Open original source"
+        >
+          {{ post?.title || "" }}
+        </h1>
+      </a>
+      }
+      <!--  -->
+      @else {
+      <h1 class="text-2xl font-semibold text-gray-900 my-4">
+        {{ post?.title }}
+      </h1>
+      }
+
+      <!--  -->
+      @let score = post?.score || 0;
+      <!--  -->
+      @let pointText = score > 1 ? "points" : "point";
+      <!--  -->
+      @let time = post?.time || '';
+      <section
+        class="opacity-80 mt-2 text-sm"
+        [class]="post?.text ? 'mb-4' : 'mb-5'"
+      >
+        <p>
+          By <strong>{{ post?.by }}</strong> ({{ score }} {{ pointText }})
+        </p>
+        <p>{{ time | date : "MMMM dd, h:mm a" }}</p>
+      </section>
+
+      <!-- ========== POST TEXT ========== -->
+      @if(post?.text) {
+      <div
+        class="prose prose-sm max-w-none mb-5"
+        [innerHTML]="post?.text | responsiveHtml"
+      ></div>
+      }
+    </div>
+    }
+
+    <!--  -->
+    @if(post) {
+    <div>
+      <app-comment-wrapper [post]="post!"></app-comment-wrapper>
+    </div>
+    }
+  </div>
+</div>

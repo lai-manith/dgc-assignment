@@ -1,0 +1,24 @@
+@use "color" as c;
+
+a,
+a:visited,
+a:active {
+  color: c.$color-text;
+  text-decoration: none;
+}
+
+p {
+  margin-bottom: 0;
+}
+
+hr {
+  &.circle {
+    border: none;
+    background-color: #444746;
+    height: 3px;
+    width: 3px;
+    border-radius: 1.5px;
+    flex-shrink: 0;
+    display: inline-block;
+  }
+}

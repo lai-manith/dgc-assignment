@@ -1,0 +1,1 @@
+type LimitType = 10 | 15 | 20 | 25 | 30;
