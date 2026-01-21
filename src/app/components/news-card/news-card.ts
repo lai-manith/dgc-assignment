@@ -3,6 +3,10 @@ import { RouterLink } from '@angular/router';
 import { TimeAgoPipe } from '../../pipes/time-ago-pipe';
 import { NewsType } from '../../types/news';
 
+declare global {
+  function gtag(...args: any[]): void;
+}
+
 @Component({
   selector: 'app-news-card',
   imports: [TimeAgoPipe, RouterLink],
@@ -15,5 +19,16 @@ export class NewsCard {
 
   openLink(url: string): void {
     window.open(url, '_blank');
+  }
+
+  trackViewComment(): void {
+    const newsData = this.data();
+    if (newsData && typeof gtag !== 'undefined') {
+      gtag('event', 'view_comment', {
+        event_category: 'engagement',
+        event_label: newsData.title || 'Untitled',
+        news_id: newsData.id,
+      });
+    }
   }
 }
