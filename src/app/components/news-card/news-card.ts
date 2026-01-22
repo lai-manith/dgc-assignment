@@ -3,12 +3,6 @@ import { RouterLink } from '@angular/router';
 import { TimeAgoPipe } from '../../pipes/time-ago-pipe';
 import { NewsType } from '../../types/news';
 
-declare global {
-  interface Window {
-    gtag: (...args: any[]) => void;
-  }
-}
-
 @Component({
   selector: 'app-news-card',
   imports: [TimeAgoPipe, RouterLink],
@@ -20,16 +14,16 @@ export class NewsCard {
   data = input<NewsType | null>(null, { alias: 'info' });
 
   openLink(url: string): void {
-    window.open(url, '_blank');
+    globalThis.open(url, '_blank');
   }
 
-  trackViewComment(): void {
-    const newsData = this.data();
-    if (newsData && typeof window.gtag !== 'undefined') {
-      window.gtag('event', 'view_comment', {
+  onCardClick(): void {
+    const data = this.data();
+    if (data) {
+      (globalThis as any).gtag('event', 'view_comment', {
         event_category: 'engagement',
-        event_label: newsData.title || 'Untitled',
-        news_id: newsData.id,
+        event_label: data.title,
+        value: data.id,
       });
     }
   }
